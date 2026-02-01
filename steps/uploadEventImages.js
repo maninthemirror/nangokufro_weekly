@@ -28,7 +28,8 @@ async function uploadImage(url, eventId) {
     .jpeg()
     .toBuffer();
 
-  const filename = `fro_${eventId}_${Date.now()}.jpg`;
+  // ✅ 指定 weekly/YYYYMMDD 資料夾
+  const filename = `weekly/${_fetchedDate}/fro_${eventId}_${Date.now()}.jpg`;
   const file = bucket.file(filename);
 
   await file.save(resized, { contentType: "image/jpeg" });
