@@ -4,6 +4,10 @@
   "engines": {
     "node": "24"
   },
+  "scripts": {
+    "dev": "firebase emulators:start",
+    "deploy": "firebase deploy --only functions"
+  },
   "dependencies": {
     "@google-cloud/vertexai": "^1.10.0",
     "cheerio": "^1.0.0-rc.12",
@@ -13,6 +17,8 @@
     "sharp": "^0.33.2",
     "uuid": "^9.0.1",
     "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.5.1"
   }
 }
-

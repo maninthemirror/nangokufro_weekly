@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import { readJson } from "../utils/storage.js";
 import { ensureWpTags } from "./ensureWpTags.js";
 import { uploadWpMedia } from "./uploadWpMedia.js";
+import { processWeeklyData } from "../utils/kanjiConverter.js";
 
 /**
  * Step 9：將 finished_YYYYMMDD.json 編譯並發佈到 WordPress
@@ -37,6 +38,9 @@ export async function compileToWordpress(_fetchedDate) {
   if (!data) {
     throw new Error(`finished json not found: ${path}`);
   }
+
+  // 1.5️⃣ 漢字轉換 (日文漢字 -> 繁體中文)
+  processWeeklyData(data);
 
   const { A = [], B = [], C = [], tags = [], title_zh_short = [], date_range = [] } = data;
 

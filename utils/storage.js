@@ -1,8 +1,14 @@
 // firebase
 import admin from "firebase-admin";
+import { firebaseConfig } from "./firebaseConfig.js";
 
 if (!admin.apps.length) {
-  admin.initializeApp();
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+    projectId: firebaseConfig.projectId,
+    storageBucket: firebaseConfig.storageBucket,
+    databaseURL: firebaseConfig.databaseURL
+  });
 }
 
 const bucket = admin.storage().bucket();

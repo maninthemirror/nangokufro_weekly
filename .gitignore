@@ -3,3 +3,4 @@
 # 忽略 Cloud Code 的快取目錄
 .cache/cloud-code/
 
+node_modules
