@@ -18,7 +18,7 @@ function toWpDate(ymd) {
   const d = ymd.slice(6, 8);
 
   // 固定台灣時間早上 08:00 發文（可自行調）
-  return `${y}-${m}-${d}T08:00:00`;
+  return `${y}-${m}-${d}T23:30:00`;
 }
 function pickFeaturedImage(data) {
   for (const item of data.A || []) {
@@ -101,12 +101,40 @@ export async function compileToWordpress(_fetchedDate) {
   const tagIds = await ensureWpTags(tags);
 
   // 6️⃣ 發佈文章
+  const wpAuth = "Basic " + Buffer.from(
+    "411380pwpadmin:r52DnbH48wrcv1tLDXHuhzQJ"
+  ).toString("base64");
+
+  // [CHECK] 檢查是否已存在 (以日期區間判斷)
+  try {
+    // 改用 date_range[0] 搜尋，以確保能找到該週文章
+    const checkRes = await fetch(`https://nangokufro.tw/wp-json/wp/v2/posts?search=${date_range[0]}&status=publish,draft,future`, {
+      method: "GET",
+      headers: { "Authorization": wpAuth }
+    });
+    
+    if (checkRes.ok) {
+      const found = await checkRes.json();
+      // 檢查標題是否同時包含 起始日 與 結束日
+      const exists = Array.isArray(found) && found.some(p => 
+        p.title.rendered.includes(date_range[0]) && 
+        p.title.rendered.includes(date_range[1])
+      );
+      
+      if (exists) {
+        console.log(`[CompileToWordpress] Article exists (Date Match: ${date_range[0]}~${date_range[1]}), skipping.`);
+        return { ok: true, skipped: true };
+      }
+    }
+  } catch (e) {
+    console.warn("[CompileToWordpress] Failed to check duplicate, proceeding:", e);
+  }
+
+  // [POST] 發佈
   const res = await fetch("https://nangokufro.tw/wp-json/wp/v2/posts", {
     method: "POST",
     headers: {
-      "Authorization": "Basic " + Buffer.from(
-        "411380pwpadmin:r52DnbH48wrcv1tLDXHuhzQJ"
-      ).toString("base64"),
+      "Authorization": wpAuth,
       "Content-Type": "application/json"
     },
     body: JSON.stringify({

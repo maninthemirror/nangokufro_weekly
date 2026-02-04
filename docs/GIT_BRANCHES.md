@@ -7,3 +7,4 @@
 - [Walkthrough - Firebase CLI 部署遷移](walkthrough_20260203_firebase_cli_migration.md)
 - [Walkthrough - 故障排除：Firebase 401 Unauthorized 錯誤](walkthrough_20260204_troubleshoot_401.md)
 - [Walkthrough - 驗證 Type A 分類邏輯](walkthrough_20260204_verify_classification_logic.md)
+- [Walkthrough - 修正 WordPress 重複發佈問題](walkthrough_20260204_fix_duplicate_posts.md)
