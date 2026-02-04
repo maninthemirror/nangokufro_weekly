@@ -8,6 +8,7 @@ import { readJson, writeJson } from "../utils/storage.js";
  * 分類關鍵字
  * ================================
  */
+const TEAM_KEYWORDS = ["川崎F", "川崎Ｆ", "川崎フロンターレ", "フロンターレ"];
 const MATCH_KEYWORDS = [
   "試合", "勝", "敗", "引き分け", "ゴール", "失点",
   "スタメン", "途中出場", "監督", "評価"
@@ -105,7 +106,7 @@ export async function classifyFrontaleEventsInternal() {
     }
 
     // --- RSS 類：A / B ---
-    if (includesAny(title, MATCH_KEYWORDS)) {
+    if (includesAny(title, MATCH_KEYWORDS) && includesAny(title, TEAM_KEYWORDS)) {
       a++;
       A.push({
         ...item,
