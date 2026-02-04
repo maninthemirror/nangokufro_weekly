@@ -66,11 +66,11 @@ export async function compileToWordpress(_fetchedDate) {
     B[0]?.title_zh
   ].filter(Boolean);
 
-  const wpExcerpt = `整理日本足球俱樂部川崎前鋒 ${date_range[0]}～${date_range[1]} 的新聞，包含：${topTitles.join("、")} 等相關動態。`;
+  const wpExcerpt = `整理日本足球俱樂部川崎前鋒 ${date_range[0]}～${date_range[1]} 的新聞匯總，包含：${topTitles.join("、")} 等相關動態。`;
 
   // 4️⃣ 組 HTML 內容
   let content = "";
-
+  content += `<p>歡迎收看本週川崎前鋒  ${date_range[0]}～${date_range[1]} 的新聞匯總</p>\n`;
   for (const block of [...A, ...B, ...C]) {
     content += `<h2 class="wp-block-heading">${block.title_zh}</h2>\n`;
 
@@ -95,6 +95,7 @@ export async function compileToWordpress(_fetchedDate) {
       content += `</ol>\n`;
     }
   }
+  content += `<p><sub>新聞翻譯若有誤，請以原文為準</sub></p><p></p>\n`;
 
   // 5️⃣ WordPress tags：名稱 → id
   const tagIds = await ensureWpTags(tags);
